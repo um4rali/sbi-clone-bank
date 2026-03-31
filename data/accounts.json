@@ -1,0 +1,60 @@
+{
+    "12345678901": {
+        "username": "rajesh.kumar",
+        "account_type": "Savings Account",
+        "account_number": "12345678901",
+        "ifsc_code": "SBIN0001234",
+        "branch": "Green Park, New Delhi",
+        "balance": 227280.5,
+        "opening_date": "2015-04-10",
+        "status": "active",
+        "daily_limit": 50000,
+        "transfer_limit": 25000,
+        "nominee_registered": true,
+        "interest_rate": "3.50%",
+        "last_transaction": "2024-02-15"
+    },
+    "12345678902": {
+        "username": "rajesh.kumar",
+        "account_type": "Fixed Deposit",
+        "account_number": "12345678902",
+        "ifsc_code": "SBIN0001234",
+        "branch": "Green Park, New Delhi",
+        "balance": 500000.0,
+        "opening_date": "2023-01-15",
+        "maturity_date": "2024-01-15",
+        "status": "active",
+        "interest_rate": "7.20%",
+        "fd_period": "12 months"
+    },
+    "23456789012": {
+        "username": "priya.sharma",
+        "account_type": "Salary Account",
+        "account_number": "23456789012",
+        "ifsc_code": "SBIN0000456",
+        "branch": "Marine Drive, Mumbai",
+        "balance": 14500.75,
+        "opening_date": "2020-08-21",
+        "status": "active",
+        "daily_limit": 100000,
+        "transfer_limit": 50000,
+        "nominee_registered": false,
+        "interest_rate": "3.00%",
+        "last_transaction": "2024-02-14"
+    },
+    "34567890123": {
+        "username": "amit.patel",
+        "account_type": "Current Account",
+        "account_number": "34567890123",
+        "ifsc_code": "SBIN0000789",
+        "branch": "Cunningham Road, Bangalore",
+        "balance": 1250000.0,
+        "opening_date": "2018-11-05",
+        "status": "active",
+        "daily_limit": 500000,
+        "transfer_limit": 200000,
+        "nominee_registered": true,
+        "interest_rate": "2.50%",
+        "last_transaction": "2024-02-15"
+    }
+}

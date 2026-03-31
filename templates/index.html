@@ -1,0 +1,345 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to {{ bank_name }}{% endblock %}
+
+{% block content %}
+<!-- Hero Banner Carousel -->
+<div id="heroCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div style="height:400px; background: linear-gradient(135deg, #1a4d8c, #2a6eb0); display: flex; align-items: center; justify-content: center; color: white;">
+                <div class="text-center">
+                    <i class="fas fa-home fa-5x mb-4" style="color: #fdb913;"></i>
+                    <h2 class="display-4">Home Loans</h2>
+                    <p class="lead">Starting at 8.50%* p.a. | Special rates for women</p>
+                    <a href="#" class="btn btn-warning btn-lg mt-3">Apply Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div style="height:400px; background: linear-gradient(135deg, #2a6eb0, #1a4d8c); display: flex; align-items: center; justify-content: center; color: white;">
+                <div class="text-center">
+                    <i class="fas fa-car fa-5x mb-4" style="color: #fdb913;"></i>
+                    <h2 class="display-4">Car Loans</h2>
+                    <p class="lead">Starting at 8.75%* p.a. | Zero foreclosure</p>
+                    <a href="#" class="btn btn-warning btn-lg mt-3">Apply Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div style="height:400px; background: linear-gradient(135deg, #fdb913, #e6a800); display: flex; align-items: center; justify-content: center; color: #1a4d8c;">
+                <div class="text-center">
+                    <i class="fas fa-chart-line fa-5x mb-4" style="color: #1a4d8c;"></i>
+                    <h2 class="display-4">Fixed Deposits</h2>
+                    <p class="lead">Upto 7.25%* p.a. | Senior citizen benefits</p>
+                    <a href="#" class="btn btn-primary btn-lg mt-3">Invest Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- Quick Login/Register Section -->
+<div class="row mb-5">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-bullhorn"></i> Important Updates
+            </div>
+            <div class="card-body">
+                <marquee behavior="scroll" direction="left" scrollamount="3" onmouseover="this.stop();" onmouseout="this.start();">
+                    <span class="badge bg-danger me-2">NEW</span> Interest rates revised w.e.f. 15th March 2024 |
+                    <span class="badge bg-warning me-2">ALERT</span> Never share your OTP with anyone |
+                    <span class="badge bg-success me-2">OFFER</span> Zero balance savings account opening online |
+                    <span class="badge bg-info me-2">UPDATE</span> Mobile app version 5.0 now available
+                </marquee>
+                
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-mobile-alt fa-3x text-primary mb-3"></i>
+                            <h5>Mobile Banking</h5>
+                            <p class="text-muted small">Download YONO app for seamless banking</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-credit-card fa-3x text-primary mb-3"></i>
+                            <h5>Credit Cards</h5>
+                            <p class="text-muted small">Apply for credit card with lifetime free</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-hand-holding-usd fa-3x text-primary mb-3"></i>
+                            <h5>Personal Loan</h5>
+                            <p class="text-muted small">Instant approval up to ₹25 lakhs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-lock"></i> Quick Login
+            </div>
+            <div class="card-body">
+                {% if not session.logged_in %}
+                <form action="{{ url_for('login') }}" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" name="username" class="form-control" placeholder="Enter username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <a href="{{ url_for('register') }}" class="btn btn-outline-primary">New User? Register</a>
+                    </div>
+                    <div class="mt-3 text-center">
+                        <a href="#" class="small">Forgot Password?</a> | 
+                        <a href="#" class="small">Trouble Logging In?</a>
+                    </div>
+                </form>
+                {% else %}
+                <div class="text-center">
+                    <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+                    <h5>Already Logged In</h5>
+                    <p class="text-muted">Continue to your dashboard</p>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Security Tip -->
+        <div class="alert alert-warning mt-3 small">
+            <i class="fas fa-shield-alt me-2"></i>
+            <strong>Security Tip:</strong> Never share your login credentials, OTP, or card details with anyone. SBI never asks for these details.
+        </div>
+    </div>
+</div>
+
+<!-- Interest Rates Section -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-chart-line"></i> Interest Rates
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="text-center p-3 border rounded">
+                            <h6 class="text-muted">Savings Account</h6>
+                            <h3 class="text-primary">3.50%</h3>
+                            <p class="small">p.a. (Above ₹1 lakh)</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center p-3 border rounded">
+                            <h6 class="text-muted">Fixed Deposit</h6>
+                            <h3 class="text-primary">7.25%</h3>
+                            <p class="small">p.a. (5 years)</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center p-3 border rounded">
+                            <h6 class="text-muted">Home Loan</h6>
+                            <h3 class="text-primary">8.50%</h3>
+                            <p class="small">p.a. (Women borrowers)</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center p-3 border rounded">
+                            <h6 class="text-muted">Education Loan</h6>
+                            <h3 class="text-primary">9.15%</h3>
+                            <p class="small">p.a. (Up to ₹40 lakhs)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <a href="#" class="btn btn-outline-primary btn-sm">View All Rates <i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Products & Services -->
+<div class="row mb-5">
+    <div class="col-12">
+        <h4 class="mb-4"><i class="fas fa-cubes me-2"></i>Our Products & Services</h4>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-piggy-bank fa-3x text-primary mb-3"></i>
+                <h5>Deposits</h5>
+                <p class="small text-muted">Savings, Current, Fixed Deposits</p>
+                <a href="#" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-home fa-3x text-primary mb-3"></i>
+                <h5>Loans</h5>
+                <p class="small text-muted">Home, Car, Personal, Education</p>
+                <a href="#" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-credit-card fa-3x text-primary mb-3"></i>
+                <h5>Cards</h5>
+                <p class="small text-muted">Credit, Debit, Prepaid Cards</p>
+                <a href="#" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-chart-pie fa-3x text-primary mb-3"></i>
+                <h5>Investments</h5>
+                <p class="small text-muted">Mutual Funds, Insurance, NPS</p>
+                <a href="#" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Announcements & Quick Links -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-bullhorn"></i> Latest Announcements
+            </div>
+            <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                <ul class="list-unstyled">
+                    <li class="mb-3 pb-2 border-bottom">
+                        <span class="badge bg-success">NEW</span>
+                        <a href="#" class="text-decoration-none ms-2">Revised interest rates on Savings Bank deposits w.e.f. 15.03.2024</a>
+                        <div class="small text-muted mt-1">12 Mar 2024</div>
+                    </li>
+                    <li class="mb-3 pb-2 border-bottom">
+                        <span class="badge bg-warning">ALERT</span>
+                        <a href="#" class="text-decoration-none ms-2">Beware of phishing calls/messages asking for OTP</a>
+                        <div class="small text-muted mt-1">10 Mar 2024</div>
+                    </li>
+                    <li class="mb-3 pb-2 border-bottom">
+                        <span class="badge bg-info">UPDATE</span>
+                        <a href="#" class="text-decoration-none ms-2">YONO app version 5.0 released with new features</a>
+                        <div class="small text-muted mt-1">08 Mar 2024</div>
+                    </li>
+                    <li class="mb-3 pb-2 border-bottom">
+                        <span class="badge bg-secondary">OFFER</span>
+                        <a href="#" class="text-decoration-none ms-2">Special FD rates for senior citizens - Upto 7.75%</a>
+                        <div class="small text-muted mt-1">05 Mar 2024</div>
+                    </li>
+                </ul>
+                <a href="#" class="btn btn-link p-0">View All Announcements <i class="fas fa-arrow-right ms-2"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-link"></i> Important Links
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i><a href="#">ATM/Branch Locator</a></li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i><a href="#">Apply for Cheque Book</a></li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i><a href="#">Download Statements</a></li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i><a href="#">Tax Payment</a></li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i><a href="#">PPF Account</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i><a href="#">Interest Rates</a></li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i><a href="#">Service Charges</a></li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i><a href="#">Grievance Redressal</a></li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i><a href="#">FAQs</a></li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i><a href="#">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="text-center">
+                    <h6 class="mb-3">Need Help?</h6>
+                    <div class="row">
+                        <div class="col-4">
+                            <i class="fas fa-phone-alt fa-2x text-primary mb-2"></i>
+                            <p class="small mb-0">1800 11 2211</p>
+                            <p class="small text-muted">24x7 Toll Free</p>
+                        </div>
+                        <div class="col-4">
+                            <i class="fas fa-envelope fa-2x text-primary mb-2"></i>
+                            <p class="small mb-0">contactcentre</p>
+                            <p class="small text-muted">@sbi.co.in</p>
+                        </div>
+                        <div class="col-4">
+                            <i class="fas fa-comment fa-2x text-primary mb-2"></i>
+                            <p class="small mb-0">Live Chat</p>
+                            <p class="small text-muted">8 AM - 8 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Disclaimer -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="small text-muted">
+            <p>* Terms and conditions apply. The information provided on this website is for demonstration purposes only.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Pause carousel on hover
+    $('#heroCarousel').carousel({
+        interval: 3000,
+        pause: 'hover'
+    });
+</script>
+{% endblock %}

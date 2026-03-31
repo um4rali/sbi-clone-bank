@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ bank_name }}{% endblock %}</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        :root {
+            --sbi-blue: #1a4d8c;
+            --sbi-light-blue: #2a6eb0;
+            --sbi-gold: #fdb913;
+            --sbi-dark: #333333;
+            --sbi-gray: #f5f5f5;
+            --sbi-border: #e0e0e0;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            min-height: 100vh;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            background: var(--sbi-dark);
+            color: white;
+            font-size: 13px;
+            padding: 6px 0;
+        }
+        
+        .top-bar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 12px;
+        }
+        
+        .top-bar a:hover {
+            color: var(--sbi-gold);
+        }
+        
+        .top-bar i {
+            margin-right: 5px;
+            font-size: 12px;
+        }
+        
+        /* Main Navigation */
+        .navbar {
+            background: white !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 0;
+        }
+        
+        .navbar-brand {
+            padding: 10px 0;
+            margin-right: 30px;
+        }
+        
+        .navbar-brand img {
+            height: 50px;
+        }
+        
+        .navbar-nav .nav-item {
+            position: relative;
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--sbi-dark) !important;
+            font-weight: 500;
+            padding: 20px 15px !important;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: var(--sbi-blue) !important;
+            background: var(--sbi-gray);
+        }
+        
+        .navbar-nav .nav-link i {
+            margin-right: 5px;
+            font-size: 14px;
+        }
+        
+        .dropdown-menu {
+            border: none;
+            border-radius: 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            margin-top: 0;
+        }
+        
+        .dropdown-item {
+            padding: 8px 25px;
+            font-size: 13px;
+            color: var(--sbi-dark);
+        }
+        
+        .dropdown-item:hover {
+            background: var(--sbi-gray);
+            color: var(--sbi-blue);
+        }
+        
+        .dropdown-item i {
+            margin-right: 10px;
+            color: var(--sbi-blue);
+            width: 18px;
+        }
+        
+        /* Quick Actions Bar */
+        .quick-actions {
+            background: white;
+            border-bottom: 1px solid var(--sbi-border);
+            padding: 8px 0;
+        }
+        
+        .quick-actions a {
+            color: var(--sbi-dark);
+            text-decoration: none;
+            margin-right: 25px;
+            font-size: 13px;
+        }
+        
+        .quick-actions a:hover {
+            color: var(--sbi-blue);
+        }
+        
+        .quick-actions i {
+            margin-right: 5px;
+            color: var(--sbi-blue);
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 30px 0;
+            min-height: calc(100vh - 300px);
+        }
+        
+        /* Cards */
+        .card {
+            border: 1px solid var(--sbi-border);
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            background: white;
+            border-bottom: 1px solid var(--sbi-border);
+            padding: 15px 20px;
+            font-weight: 600;
+            color: var(--sbi-dark);
+        }
+        
+        .card-header i {
+            color: var(--sbi-blue);
+            margin-right: 8px;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            background: var(--sbi-blue);
+            border: none;
+            border-radius: 3px;
+            padding: 10px 25px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .btn-primary:hover {
+            background: var(--sbi-light-blue);
+        }
+        
+        .btn-outline-primary {
+            border: 1px solid var(--sbi-blue);
+            color: var(--sbi-blue);
+            border-radius: 3px;
+            padding: 10px 25px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .btn-outline-primary:hover {
+            background: var(--sbi-blue);
+            color: white;
+        }
+        
+        /* Forms */
+        .form-control, .form-select {
+            border: 1px solid var(--sbi-border);
+            border-radius: 3px;
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--sbi-blue);
+            box-shadow: none;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            font-size: 13px;
+            color: var(--sbi-dark);
+            margin-bottom: 5px;
+        }
+        
+        /* Tables */
+        .table {
+            font-size: 14px;
+        }
+        
+        .table thead th {
+            background: var(--sbi-gray);
+            color: var(--sbi-dark);
+            font-weight: 600;
+            border-bottom: 1px solid var(--sbi-border);
+            padding: 12px;
+        }
+        
+        .table tbody td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+        
+        /* Alerts */
+        .alert {
+            border: none;
+            border-radius: 3px;
+            padding: 15px 20px;
+            font-size: 14px;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--sbi-dark);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .footer h6 {
+            color: var(--sbi-gold);
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        
+        .footer a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 13px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .footer a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #444;
+            margin-top: 30px;
+            padding-top: 20px;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        /* Balance Card */
+        .balance-card {
+            background: linear-gradient(135deg, var(--sbi-blue), var(--sbi-light-blue));
+            color: white;
+            border-radius: 5px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .balance-amount {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .balance-label {
+            font-size: 14px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .account-number {
+            font-size: 16px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        
+        /* Transaction List */
+        .transaction-item {
+            border-bottom: 1px solid var(--sbi-border);
+            padding: 15px 0;
+        }
+        
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        
+        .transaction-credit {
+            color: #28a745;
+            font-weight: 600;
+        }
+        
+        .transaction-debit {
+            color: #dc3545;
+            font-weight: 600;
+        }
+        
+        /* Flash Messages */
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 350px;
+        }
+        
+        .flash-message {
+            margin-bottom: 10px;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Loading Spinner */
+        .spinner-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--sbi-gray);
+            border-top: 5px solid var(--sbi-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar-brand img {
+                height: 40px;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 12px 15px !important;
+            }
+            
+            .quick-actions {
+                display: none;
+            }
+            
+            .balance-amount {
+                font-size: 28px;
+            }
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Loading Spinner -->
+    <div class="spinner-wrapper" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Flash Messages -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
+                        {% if category == 'success' %}
+                            <i class="fas fa-check-circle me-2"></i>
+                        {% elif category == 'danger' %}
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                        {% elif category == 'warning' %}
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                        {% else %}
+                            <i class="fas fa-info-circle me-2"></i>
+                        {% endif %}
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <a href="#"><i class="fas fa-phone-alt"></i> 1800 11 2211</a>
+                    <a href="#"><i class="fas fa-envelope"></i> contactcentre@sbi.co.in</a>
+                    <a href="#"><i class="fas fa-map-marker-alt"></i> Branch Locator</a>
+                </div>
+                <div class="col-md-6 text-end">
+                    <a href="#"><i class="fas fa-user"></i> Corporate Website</a>
+                    <a href="#"><i class="fas fa-globe"></i> SBI International</a>
+                    <a href="#"><i class="fas fa-lock"></i> Secure Banking</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <div style="width:120px;height:50px;background:#1a4d8c;color:white;font-size:24px;font-weight:bold;display:flex;align-items:center;justify-content:center;border-radius:5px;">SBI</div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if session.logged_in %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('dashboard') }}">
+                                <i class="fas fa-home"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="accountsDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-wallet"></i> Accounts
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ url_for('accounts') }}"><i class="fas fa-list"></i> All Accounts</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('statements') }}"><i class="fas fa-file-invoice"></i> Statements</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('transfer') }}">
+                                <i class="fas fa-exchange-alt"></i> Transfer
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-cog"></i> Services
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-mobile-alt"></i> Mobile Banking</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-credit-card"></i> Cards</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line"></i> Investments</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-file-signature"></i> Loan Applications</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle"></i> {{ session.username.split('.')[0]|title }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{{ url_for('profile') }}"><i class="fas fa-id-card"></i> My Profile</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-shield-alt"></i> Security Settings</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-bell"></i> Notifications</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Services</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Customer Care</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary ms-2" href="{{ url_for('register') }}">Open Account</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Quick Actions Bar (for logged in users) -->
+    {% if session.logged_in %}
+    <div class="quick-actions">
+        <div class="container">
+            <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="{{ url_for('accounts') }}"><i class="fas fa-university"></i> Accounts</a>
+            <a href="{{ url_for('transfer') }}"><i class="fas fa-exchange-alt"></i> Fund Transfer</a>
+            <a href="#"><i class="fas fa-credit-card"></i> Cards</a>
+            <a href="#"><i class="fas fa-file-invoice"></i> Pay Bills</a>
+            <a href="#"><i class="fas fa-mobile-alt"></i> Mobile Recharge</a>
+            <a href="#"><i class="fas fa-history"></i> Transaction History</a>
+            <a href="#"><i class="fas fa-download"></i> Download Statements</a>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h6>About SBI</h6>
+                    <a href="#">Overview</a>
+                    <a href="#">History</a>
+                    <a href="#">Board of Directors</a>
+                    <a href="#">Awards & Recognition</a>
+                    <a href="#">Careers</a>
+                </div>
+                <div class="col-md-3">
+                    <h6>Products</h6>
+                    <a href="#">Savings Accounts</a>
+                    <a href="#">Current Accounts</a>
+                    <a href="#">Fixed Deposits</a>
+                    <a href="#">Loans</a>
+                    <a href="#">Credit Cards</a>
+                </div>
+                <div class="col-md-3">
+                    <h6>Services</h6>
+                    <a href="#">Net Banking</a>
+                    <a href="#">Mobile Banking</a>
+                    <a href="#">YONO</a>
+                    <a href="#">UPI Services</a>
+                    <a href="#">Bill Payments</a>
+                </div>
+                <div class="col-md-3">
+                    <h6>Customer Care</h6>
+                    <a href="#">Contact Us</a>
+                    <a href="#">FAQs</a>
+                    <a href="#">Grievance Redressal</a>
+                    <a href="#">Feedback</a>
+                    <a href="#">Do's & Don'ts</a>
+                </div>
+            </div>
+            
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <h6>Connect with us</h6>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h6>Download Mobile App</h6>
+                    <a href="#" class="me-2"><i class="fab fa-google-play fa-2x"></i></a>
+                    <a href="#"><i class="fab fa-apple fa-2x"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p>&copy; 2024 State Bank of India. All rights reserved. | CIN: {{ bank_cin|default('L65110MH1955GOI007112') }}</p>
+                        <p class="mt-2">
+                            <a href="#" class="text-white-50 me-3">Privacy Policy</a>
+                            <a href="#" class="text-white-50 me-3">Terms of Use</a>
+                            <a href="#" class="text-white-50 me-3">Disclaimer</a>
+                            <a href="#" class="text-white-50">Sitemap</a>
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <p>Site best viewed at 1366 x 768 resolution</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        // Show loading spinner on form submissions
+        $(document).on('submit', 'form', function() {
+            $('#loadingSpinner').css('display', 'flex');
+        });
+        
+        // Auto-hide flash messages after 5 seconds
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 5000);
+        
+        // Format currency in Indian style
+        function formatIndianCurrency(amount) {
+            const formatter = new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                minimumFractionDigits: 2
+            });
+            return formatter.format(amount);
+        }
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

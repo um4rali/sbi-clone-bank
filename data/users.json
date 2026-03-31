@@ -1,0 +1,47 @@
+{
+    "rajesh.kumar": {
+        "password": "scrypt:32768:8:1$SaGy0l33N3J5d8ha$37d41617afe66c7e12475d5f78725e3e96da1a1b0d5c63465497d26bbe22bf0cbb727a9cc2c58f7e38eafedf988c73abe75fa7dbc00c9a66a13ffd4a60844f3d",
+        "full_name": "Rajesh Kumar",
+        "email": "rajesh.kumar@email.com",
+        "phone": "9876543210",
+        "pan": "ABCDE1234F",
+        "aadhar": "123412341234",
+        "dob": "1985-06-15",
+        "address": "45, Green Park Extension, New Delhi - 110016",
+        "occupation": "Software Engineer",
+        "gender": "Male",
+        "marital_status": "Married",
+        "nominee_name": "Priya Kumar",
+        "nominee_relation": "Spouse"
+    },
+    "priya.sharma": {
+        "password": "scrypt:32768:8:1$mqA8Svod1UkBFe1T$78d238f88b107a466546a6a6930eddee868c0e01eec81703d629c98e744bcc975157bf16d05a6c67007a74fd23e1b0df62f89140d2d5c2454e7183f5c7c5dbc4",
+        "full_name": "Priya Sharma",
+        "email": "priya.sharma@email.com",
+        "phone": "9876543211",
+        "pan": "FGHIJ5678K",
+        "aadhar": "567856785678",
+        "dob": "1990-09-22",
+        "address": "101, Marine Drive, Mumbai - 400002",
+        "occupation": "Doctor",
+        "gender": "Female",
+        "marital_status": "Single",
+        "nominee_name": "Amit Sharma",
+        "nominee_relation": "Father"
+    },
+    "amit.patel": {
+        "password": "scrypt:32768:8:1$l5TARYrPUPauxvqT$10ff9145957df8565bcdfc9e25a754769cfc6800b13fa6223c8fa1f26e906828abd05c3e7824eda1d4460626c26a37a98fab10db5004776c39ea0f121759d04a",
+        "full_name": "Amit Patel",
+        "email": "amit.patel@email.com",
+        "phone": "9876543212",
+        "pan": "KLMNO9012P",
+        "aadhar": "901290129012",
+        "dob": "1982-03-10",
+        "address": "22, Cunningham Road, Bangalore - 560052",
+        "occupation": "Business Owner",
+        "gender": "Male",
+        "marital_status": "Married",
+        "nominee_name": "Neha Patel",
+        "nominee_relation": "Spouse"
+    }
+}

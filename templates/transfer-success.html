@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Transfer Success - {{ bank_name }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card text-center">
+            <div class="card-header bg-success text-white">
+                <i class="fas fa-check-circle fa-4x mb-3"></i>
+                <h4>Transfer Initiated Successfully!</h4>
+            </div>
+            
+            <div class="card-body p-4">
+                <div class="mb-4">
+                    <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                </div>
+                
+                <h5 class="mb-4">Transaction Details</h5>
+                
+                <div class="text-start">
+                    <div class="row mb-3">
+                        <div class="col-5 text-muted">To Account:</div>
+                        <div class="col-7 fw-bold">{{ to_account }}</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-5 text-muted">Amount:</div>
+                        <div class="col-7 fw-bold text-success">₹{{ amount }}</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-5 text-muted">Remarks:</div>
+                        <div class="col-7">{{ remarks or 'Transfer' }}</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-5 text-muted">Transaction Reference:</div>
+                        <div class="col-7">
+                            <span class="badge bg-light text-dark p-2">{{ reference }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-5 text-muted">Date & Time:</div>
+                        <div class="col-7">{{ now().strftime('%d-%m-%Y %H:%M:%S') }}</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-5 text-muted">Status:</div>
+                        <div class="col-7">
+                            <span class="badge bg-success">Success</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <!-- 🔴 MITMPROXY DEMO HINT -->
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Note:</strong> A confirmation SMS has been sent to your registered mobile number.
+                    <!-- This transaction was intercepted by mitmproxy in the demo! -->
+                </div>
+                
+                <div class="alert alert-warning small">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    If you did not initiate this transaction, contact customer care immediately.
+                </div>
+                
+                <div class="d-grid gap-2 mt-4">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                        <i class="fas fa-home me-2"></i>Back to Dashboard
+                    </a>
+                    <a href="{{ url_for('transfer') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-exchange-alt me-2"></i>Make Another Transfer
+                    </a>
+                    <button class="btn btn-outline-secondary" onclick="window.print()">
+                        <i class="fas fa-print me-2"></i>Print Receipt
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Download Options -->
+        <div class="row mt-3">
+            <div class="col-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-download fa-2x text-primary mb-2"></i>
+                        <h6>Download Receipt</h6>
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-primary">PDF</button>
+                            <button class="btn btn-outline-primary">Excel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-envelope fa-2x text-primary mb-2"></i>
+                        <h6>Email Receipt</h6>
+                        <button class="btn btn-sm btn-outline-primary">Send to Email</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

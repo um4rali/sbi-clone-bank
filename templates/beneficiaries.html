@@ -1,0 +1,459 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Beneficiaries - {{ bank_name }}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h4 class="mb-3"><i class="fas fa-users me-2"></i>Manage Beneficiaries</h4>
+        <p class="text-muted">Add, view, and manage your trusted beneficiaries for quick transfers</p>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Add New Beneficiary Form -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <i class="fas fa-user-plus me-2"></i>Add New Beneficiary
+            </div>
+            <div class="card-body">
+                <form id="beneficiaryForm" onsubmit="return addBeneficiary(event)">
+                    <div class="mb-3">
+                        <label class="form-label">Beneficiary Name</label>
+                        <input type="text" class="form-control" id="beneficiaryName" placeholder="Full name" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Account Number</label>
+                        <input type="text" class="form-control" id="accountNumber" placeholder="11-digit account number" 
+                               pattern="[0-9]{11}" maxlength="11" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Confirm Account Number</label>
+                        <input type="text" class="form-control" id="confirmAccount" placeholder="Re-enter account number" 
+                               pattern="[0-9]{11}" maxlength="11" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Bank Name</label>
+                        <select class="form-select" id="bankName" required>
+                            <option value="">Select Bank</option>
+                            <option value="SBI" selected>State Bank of India</option>
+                            <option value="HDFC">HDFC Bank</option>
+                            <option value="ICICI">ICICI Bank</option>
+                            <option value="PNB">Punjab National Bank</option>
+                            <option value="BOB">Bank of Baroda</option>
+                            <option value="Other">Other Bank</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">IFSC Code</label>
+                        <input type="text" class="form-control" id="ifscCode" placeholder="SBIN0001234" 
+                               pattern="^[A-Z]{4}0[A-Z0-9]{6}$" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Beneficiary Type</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="beneficiaryType" id="withinSBI" value="within" checked>
+                            <label class="form-check-label" for="withinSBI">Within SBI</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="beneficiaryType" id="otherBank" value="other">
+                            <label class="form-check-label" for="otherBank">Other Bank</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Transfer Limit (Optional)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">₹</span>
+                            <input type="number" class="form-control" id="transferLimit" placeholder="Daily limit" min="0" step="1000">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="approveRequired">
+                        <label class="form-check-label" for="approveRequired">Require approval for transfers</label>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save me-2"></i>Add Beneficiary
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Quick Info -->
+        <div class="card mt-3 bg-light">
+            <div class="card-body small">
+                <i class="fas fa-info-circle text-primary me-2"></i>
+                <strong>Note:</strong> New beneficiaries added will be activated after 30 minutes for security reasons.
+            </div>
+        </div>
+    </div>
+    
+    <!-- Beneficiary List -->
+    <div class="col-md-8">
+        <!-- My Beneficiaries -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <i class="fas fa-list me-2"></i>My Beneficiaries
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <input type="text" class="form-control form-control-sm d-inline-block w-auto" placeholder="Search beneficiaries..." id="searchBeneficiary">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Name</th>
+                                <th>Account Number</th>
+                                <th>Bank</th>
+                                <th>IFSC</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="beneficiaryTableBody">
+                            <!-- Sample Beneficiary 1 -->
+                            <tr>
+                                <td>
+                                    <i class="fas fa-user-circle text-primary me-2"></i>
+                                    Rajesh Kumar
+                                </td>
+                                <td>XXXXXX8901</td>
+                                <td>SBI</td>
+                                <td>SBIN0001234</td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="editBeneficiary(this)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteBeneficiary(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-info" onclick="viewDetails(this)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Sample Beneficiary 2 -->
+                            <tr>
+                                <td>
+                                    <i class="fas fa-user-circle text-success me-2"></i>
+                                    Priya Sharma
+                                </td>
+                                <td>XXXXXX2345</td>
+                                <td>HDFC</td>
+                                <td>HDFC0001234</td>
+                                <td><span class="badge bg-warning">Pending</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="editBeneficiary(this)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteBeneficiary(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-info" onclick="viewDetails(this)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Sample Beneficiary 3 -->
+                            <tr>
+                                <td>
+                                    <i class="fas fa-user-circle text-info me-2"></i>
+                                    Amit Patel
+                                </td>
+                                <td>XXXXXX6789</td>
+                                <td>ICICI</td>
+                                <td>ICIC0001234</td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="editBeneficiary(this)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteBeneficiary(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-info" onclick="viewDetails(this)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Sample Beneficiary 4 -->
+                            <tr>
+                                <td>
+                                    <i class="fas fa-user-circle text-warning me-2"></i>
+                                    Sneha Reddy
+                                </td>
+                                <td>XXXXXX4567</td>
+                                <td>PNB</td>
+                                <td>PUNB0001234</td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="editBeneficiary(this)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteBeneficiary(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-info" onclick="viewDetails(this)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <small class="text-muted">Showing 4 of 4 beneficiaries</small>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <nav aria-label="Beneficiary pagination">
+                            <ul class="pagination pagination-sm justify-content-end mb-0">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Transfers to Beneficiaries -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-history me-2"></i>Recent Transfers to Beneficiaries
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-sm mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Beneficiary</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="small">15 Mar 2024</td>
+                                <td>Rajesh Kumar</td>
+                                <td class="text-end">₹5,000</td>
+                                <td><span class="badge bg-success">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td class="small">14 Mar 2024</td>
+                                <td>Priya Sharma</td>
+                                <td class="text-end">₹2,500</td>
+                                <td><span class="badge bg-success">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td class="small">12 Mar 2024</td>
+                                <td>Amit Patel</td>
+                                <td class="text-end">₹10,000</td>
+                                <td><span class="badge bg-success">Success</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Beneficiary Modal -->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Beneficiary</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Edit beneficiary details would be available here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Details Modal -->
+<div class="modal fade" id="viewModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Beneficiary Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-user-circle fa-4x text-primary"></i>
+                    <h5 class="mt-2" id="viewName">Rajesh Kumar</h5>
+                </div>
+                <table class="table table-sm">
+                    <tr>
+                        <td class="text-muted">Account Number</td>
+                        <td class="fw-bold" id="viewAccount">XXXXXX8901</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Bank</td>
+                        <td class="fw-bold" id="viewBank">State Bank of India</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">IFSC Code</td>
+                        <td class="fw-bold" id="viewIFSC">SBIN0001234</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Added On</td>
+                        <td class="fw-bold">10 Jan 2024</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Transfer Limit</td>
+                        <td class="fw-bold">₹50,000</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this beneficiary?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Add beneficiary function
+function addBeneficiary(event) {
+    event.preventDefault();
+    
+    const name = document.getElementById('beneficiaryName').value;
+    const account = document.getElementById('accountNumber').value;
+    const confirmAccount = document.getElementById('confirmAccount').value;
+    
+    if (account !== confirmAccount) {
+        alert('Account numbers do not match!');
+        return false;
+    }
+    
+    alert(`Beneficiary "${name}" added successfully! It will be active after 30 minutes.`);
+    document.getElementById('beneficiaryForm').reset();
+    return false;
+}
+
+// Search beneficiaries
+document.getElementById('searchBeneficiary').addEventListener('keyup', function() {
+    const searchValue = this.value.toLowerCase();
+    const tableRows = document.querySelectorAll('#beneficiaryTableBody tr');
+    
+    tableRows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        if (text.includes(searchValue)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+
+// Edit beneficiary
+function editBeneficiary(button) {
+    const modal = new bootstrap.Modal(document.getElementById('editModal'));
+    modal.show();
+}
+
+// View details
+function viewDetails(button) {
+    const modal = new bootstrap.Modal(document.getElementById('viewModal'));
+    modal.show();
+}
+
+// Delete beneficiary
+function deleteBeneficiary(button) {
+    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    modal.show();
+}
+
+function confirmDelete() {
+    alert('Beneficiary deleted successfully!');
+}
+
+// Form validation
+document.getElementById('accountNumber').addEventListener('input', function() {
+    const confirmField = document.getElementById('confirmAccount');
+    if (this.value !== confirmField.value && confirmField.value !== '') {
+        confirmField.classList.add('is-invalid');
+    } else {
+        confirmField.classList.remove('is-invalid');
+    }
+});
+
+document.getElementById('confirmAccount').addEventListener('input', function() {
+    const accountField = document.getElementById('accountNumber');
+    if (this.value !== accountField.value) {
+        this.classList.add('is-invalid');
+    } else {
+        this.classList.remove('is-invalid');
+    }
+});
+
+// IFSC validation
+document.getElementById('ifscCode').addEventListener('input', function() {
+    const ifsc = this.value.toUpperCase();
+    this.value = ifsc;
+    
+    const pattern = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+    if (!pattern.test(ifsc) && ifsc.length === 11) {
+        this.classList.add('is-invalid');
+    } else {
+        this.classList.remove('is-invalid');
+    }
+});
+</script>
+{% endblock %}

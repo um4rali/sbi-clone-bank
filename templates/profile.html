@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - {{ bank_name }}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h4 class="mb-3"><i class="fas fa-user-circle me-2"></i>My Profile</h4>
+        <p class="text-muted">View and manage your personal information</p>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Profile Summary Card -->
+    <div class="col-md-4 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <div class="mb-3">
+                    <i class="fas fa-user-circle fa-5x text-primary"></i>
+                </div>
+                <h5 class="mb-1">{{ user.full_name }}</h5>
+                <p class="text-muted small mb-2">Customer since {{ user.registration_date|default('2023') }}</p>
+                
+                <hr>
+                
+                <div class="row text-center">
+                    <div class="col-6">
+                        <h6>{{ accounts|length }}</h6>
+                        <small class="text-muted">Accounts</small>
+                    </div>
+                    <div class="col-6">
+                        <h6>{{ user.nominee_name|default('Not Set') }}</h6>
+                        <small class="text-muted">Nominee</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Links -->
+        <div class="card mt-3">
+            <div class="card-header">
+                <i class="fas fa-link me-2"></i>Quick Actions
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-key me-2 text-primary"></i>Change Password
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-mobile-alt me-2 text-primary"></i>Update Mobile Number
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-envelope me-2 text-primary"></i>Update Email
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-file-signature me-2 text-primary"></i>Update Address
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-id-card me-2 text-primary"></i>Update PAN/Aadhar
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Profile Details Form -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-edit me-2"></i>Personal Information
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('update_profile') }}">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" value="{{ user.full_name }}" readonly>
+                            <small class="text-muted">Name cannot be changed. Contact branch for updates.</small>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="text" class="form-control" value="{{ user.dob|default('15-06-1985') }}" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Gender</label>
+                            <input type="text" class="form-control" value="{{ user.gender|default('Male') }}" readonly>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Marital Status</label>
+                            <input type="text" class="form-control" value="{{ user.marital_status|default('Married') }}" readonly>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h6 class="mb-3">Contact Information</h6>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" value="{{ user.email }}" readonly>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Mobile Number</label>
+                            <input type="text" name="phone" class="form-control" value="{{ user.phone }}" 
+                                   pattern="[6-9][0-9]{9}" maxlength="10">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <textarea name="address" class="form-control" rows="3">{{ user.address }}</textarea>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h6 class="mb-3">KYC Details</h6>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">PAN Card</label>
+                            <input type="text" class="form-control" value="{{ user.pan|default('ABCDE1234F') }}" readonly>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Aadhar Number</label>
+                            <input type="text" class="form-control" value="{{ user.aadhar|default('XXXX-XXXX-1234') }}" readonly>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h6 class="mb-3">Occupation Details</h6>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Occupation</label>
+                            <input type="text" name="occupation" class="form-control" value="{{ user.occupation|default('Salaried') }}">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Annual Income</label>
+                            <select name="income" class="form-select">
+                                <option value="< 2.5 Lakhs">Less than ₹2.5 Lakhs</option>
+                                <option value="2.5 - 5 Lakhs" selected>₹2.5 - ₹5 Lakhs</option>
+                                <option value="5 - 10 Lakhs">₹5 - ₹10 Lakhs</option>
+                                <option value="> 10 Lakhs">Above ₹10 Lakhs</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h6 class="mb-3">Nominee Details</h6>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nominee Name</label>
+                            <input type="text" name="nominee_name" class="form-control" value="{{ user.nominee_name|default('') }}">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Relationship</label>
+                            <input type="text" name="nominee_relation" class="form-control" value="{{ user.nominee_relation|default('') }}">
+                        </div>
+                    </div>
+                    
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button>
+                        <button type="reset" class="btn btn-outline-secondary ms-2">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
